@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum MessageType {
 	NO_RECORD_EXIST("1004", "No record found"),
-	GENERAL_EXCEPTION("9999", "An error occured");
+	TOKEN_NOT_FOUND("1005", "Token coudnt be found in the request"),
+	GENERAL_EXCEPTION("9999", "An error occured"),
+	TOKEN_EXPIRED("1008", "Token expired");
 	
 	private String code;
 	private String message;

@@ -1,6 +1,7 @@
 package com.AOA.jwt;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,11 +35,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			throws ServletException, IOException {
 		
 		String header = request.getHeader("Authorization");
-		if(header == null) {
+		String path = request.getServletPath();
+		
+		Set<String> publicPaths = Set.of("/register", "/authenticate", "/refreshToken");
+		if (publicPaths.contains(path)) {    
 			filterChain.doFilter(request, response);
-			throw new BaseExcepiton(new ErrorMessage(MessageType.TOKEN_NOT_FOUND, null));
-			//return;
+		    return;
 		}
+
+		if (header == null) {
+		    throw new BaseExcepiton(new ErrorMessage(MessageType.TOKEN_NOT_FOUND, null));
+		}
+
+		filterChain.doFilter(request, response);
 		
 		String token = header.substring(7);
 		String username;

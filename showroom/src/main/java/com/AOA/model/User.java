@@ -1,7 +1,6 @@
 package com.AOA.model;
 
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "account")
+@Table(name = "User")
 @Getter
 @Setter
 @AllArgsConstructor

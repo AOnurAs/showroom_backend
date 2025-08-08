@@ -1,13 +1,8 @@
 package com.AOA.config;
 
-import java.beans.BeanProperty;
-import java.net.Authenticator.RequestorType;
-import java.net.http.HttpRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.AOA.handler.AuthEntryPoint;
 import com.AOA.jwt.JwtAuthenticationFilter;
 
 @Configuration
@@ -32,8 +28,8 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	//@Autowired
-	//private AuthEntryPoint authEntryPoint;
+	@Autowired
+	private AuthEntryPoint authEntryPoint;
 	
 	
 	@Bean
@@ -43,7 +39,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(request -> 
 					request.requestMatchers(REGISTER, AUTHENTICATE, REFRESH_TOKEN).permitAll()
 					.anyRequest().authenticated())
-					//.exceptionHandling().authenticationEntryPoint(authEntryPoint).and()
+					.exceptionHandling().authenticationEntryPoint(authEntryPoint).and()
 					.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 					.authenticationProvider(authenticationProvider)
 					.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
